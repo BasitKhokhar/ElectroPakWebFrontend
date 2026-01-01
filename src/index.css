@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+/* loader animation */
+.circular-text {
+  display: inline-block;
+  position: relative;
+  width: 200px; /* Adjust based on the desired size */
+  height: 200px; /* Adjust based on the desired size */
+  animation: spin 3s linear infinite; /* Control rotation speed */
+}
+
+.circular-text span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  transform: rotate(0deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0; /* Pivot around the left */
+}
+
+/* Create 12 evenly spaced letters */
+.circular-text span:nth-child(1) { transform: rotate(0deg) translate(80px) rotate(0deg); }
+.circular-text span:nth-child(2) { transform: rotate(30deg) translate(80px) rotate(-30deg); }
+.circular-text span:nth-child(3) { transform: rotate(60deg) translate(80px) rotate(-60deg); }
+.circular-text span:nth-child(4) { transform: rotate(90deg) translate(80px) rotate(-90deg); }
+.circular-text span:nth-child(5) { transform: rotate(120deg) translate(80px) rotate(-120deg); }
+.circular-text span:nth-child(6) { transform: rotate(150deg) translate(80px) rotate(-150deg); }
+.circular-text span:nth-child(7) { transform: rotate(180deg) translate(80px) rotate(-180deg); }
+.circular-text span:nth-child(8) { transform: rotate(210deg) translate(80px) rotate(-210deg); }
+.circular-text span:nth-child(9) { transform: rotate(240deg) translate(80px) rotate(-240deg); }
+.circular-text span:nth-child(10) { transform: rotate(270deg) translate(80px) rotate(-270deg); }
+.circular-text span:nth-child(11) { transform: rotate(300deg) translate(80px) rotate(-300deg); }
+.circular-text span:nth-child(12) { transform: rotate(330deg) translate(80px) rotate(-330deg); }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
