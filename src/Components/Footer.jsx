@@ -5,7 +5,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function Footer() {
-  
+
   useEffect(() => {
     AOS.init({
       duration: 1200,
@@ -50,93 +50,105 @@ export default function Footer() {
         }));
       })
   }, []);
-console.log('Footer data:',footerdata)
+  console.log('Footer data:', footerdata)
 
   return (
-    <div className=' bg-[#282828] text-white px-10 py-6'>
-      <div className=' grid sm:grid-cols-1 pl-4  md:grid-cols-2 lg:grid-cols-4 gap-4 '>
-        {/* footer first column data */}
-        <div className=' flex flex-col justify-start'>
-          <div>
-            <Link to="/">
-              {
-               footerdata.logoData && footerdata.logoData.map((item) => {
-                  return (
-                    <div key={item.id} data-aos="fade-up">
-                      <img src={item.image_url} alt="" className=' h-16' />
-                    </div>
-                  )
-                })
-              }
-            </Link>
-          </div>
-          <div className=' flex flex-col gap-1 mt-3'>
+    <div className='bg-gradient-blue-sky text-white px-6 sm:px-10 py-16 mt-20 border-t border-white/10'>
+      <div className='container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16'>
+        {/* Brand Section */}
+        <div className='flex flex-col gap-6'>
+          <Link to="/" className="group inline-block">
+            {
+              footerdata.logoData && footerdata.logoData.map((item) => {
+                return (
+                  <div key={item.id} data-aos="fade-up" className="relative">
+                    <div className="absolute -inset-2 bg-white/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <img src={item.image_url} alt="ElectroPak Logo" className='relative h-14' />
+                  </div>
+                )
+              })
+            }
+          </Link>
+          <div className='flex flex-col gap-4'>
             {
               footerdata.contactListData && footerdata.contactListData.map((items) => {
                 return (
-                  <div className='flex gap-3' key={items.id} data-aos="fade-up">
-                    <span><i className={items.icons}></i></span>
-                    <span className='cursor-pointer text-base'>{items.contact_list_items}</span>
-
+                  <div className='flex items-center gap-4 group cursor-pointer' key={items.id} data-aos="fade-up">
+                    <span className='w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-primary border border-white/10 group-hover:bg-primary group-hover:text-white transition-all duration-300'>
+                      <i className={items.icons}></i>
+                    </span>
+                    <span className='text-white/70 group-hover:text-white transition-colors'>{items.contact_list_items}</span>
                   </div>
                 )
               })
             }
           </div>
-
         </div>
-        {/* second column */}
-        <div className='flex flex-col text-center align-middle justify-items-center'>
-          <div><h1 className='text-2xl font-bold text-left mb-4' data-aos="fade-up">Quick Links</h1></div>
-          <div className=' flex flex-col justify-center text-left' data-aos="fade-up">
-            { footerdata.FooterLinksData && footerdata.FooterLinksData.map((items) => (
-              <div key={items.footer_links_list} className=' text-white flex flex-col cursor-pointer' >
-                <Link to={items.routes}>
-                  <span className=' text-white hover:text-[#656565]'>{items.footer_links_list}</span>
-                </Link>
-              </div>
-            ))}</div>
 
-        </div>
-        {/* third column */}
+        {/* Quick Links */}
         <div>
-          <div><h1 className='text-2xl font-bold text-left mb-4' data-aos="fade-up">Information</h1></div>
-          <div className=' flex flex-col justify-center text-left' data-aos="fade-up">
+          <h3 className='text-xl font-bold mb-8 relative inline-block' data-aos="fade-up">
+            Quick Links
+            <span className="absolute -bottom-2 left-0 w-12 h-1 bg-primary rounded-full"></span>
+          </h3>
+          <div className='flex flex-col gap-4' data-aos="fade-up">
+            {footerdata.FooterLinksData && footerdata.FooterLinksData.map((items, index) => (
+              <Link key={`${items.footer_links_list}-${index}`} to={items.routes} className='text-white/60 hover:text-primary transition-colors flex items-center gap-2 group'>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-primary transition-colors"></span>
+                {items.footer_links_list}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Information */}
+        <div>
+          <h3 className='text-xl font-bold mb-8 relative inline-block' data-aos="fade-up">
+            Information
+            <span className="absolute -bottom-2 left-0 w-12 h-1 bg-accent rounded-full"></span>
+          </h3>
+          <div className='flex flex-col gap-4' data-aos="fade-up">
             {
-              footerdata.FooterInfoData && footerdata.FooterInfoData.map((items) => {
+              footerdata.FooterInfoData && footerdata.FooterInfoData.map((items, index) => {
                 return (
-                  <div key={items.footer_info_list}>
-                    <Link to={items.routes} >
-                      <span className=' text-white hover:text-[#656565]'>{items.footer_info_list}</span>
-                    </Link>
-                  </div>
+                  <Link key={`${items.footer_info_list}-${index}`} to={items.routes} className='text-white/60 hover:text-accent transition-colors flex items-center gap-2 group'>
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-accent transition-colors"></span>
+                    {items.footer_info_list}
+                  </Link>
                 )
               })
             }
           </div>
-
         </div>
-        {/* fourth column */}
-        <div className='flex flex-col  text-2xl'>
-          <div><h1 className='text-2xl font-bold text-left mb-4' data-aos="fade-up">Socail Links</h1></div>
-          <div className='flex gap-5' data-aos="fade-up">
-          {
-            footerdata.socialIconsData && footerdata.socialIconsData.map((items) => {
-              return (
-                <div key={items.icons}>
-                  <a  href={items.routes}><span className=' text-white hover:text-[#656565]'><i className={items.icons} ></i></span></a>
-                </div>
-              )
-            })
-          }
+
+        {/* Social Links */}
+        <div>
+          <h3 className='text-xl font-bold mb-8 relative inline-block' data-aos="fade-up">
+            Connect With Us
+            <span className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></span>
+          </h3>
+          <div className='flex gap-4' data-aos="fade-up">
+            {
+              footerdata.socialIconsData && footerdata.socialIconsData.map((items) => {
+                return (
+                  <a key={items.icons} href={items.routes} className='w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl hover:bg-white hover:text-text hover:shadow-2xl hover:shadow-white/10 transition-all duration-300 transform hover:-translate-y-1'>
+                    <i className={items.icons} ></i>
+                  </a>
+                )
+              })
+            }
           </div>
-          
         </div>
       </div>
-      <div className=' flex flex-col sm:flex-col md:flex-col lg:flex-row justify-between px-4 pt-8 gap-4 mb-6'>
-          <p>All Rights Reserved By @ Basit Sanitary Store </p>
-          <p>Made By <a href="https://basitportfolioweb.netlify.app/" className=' text-[#282828] bg-white border-2 py-1 px-3 rounded-full font-bold hover:text-white hover:bg-[#282828] hover:border-white transition'>B.Creatives</a></p>
+
+      {/* Bottom Bar */}
+      <div className='container mx-auto border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-6'>
+        <p className="text-white/40 text-sm">© {new Date().getFullYear()} ElectroPak. All Rights Reserved.</p>
+        <div className="flex items-center gap-4">
+          <span className="text-white/40 text-sm">Crafted by</span>
+          <a href="https://basitportfolioweb.netlify.app/" className='bg-primary/10 text-primary border border-primary/20 py-1.5 px-4 rounded-full text-sm font-bold hover:bg-primary hover:text-white transition-all duration-300'>B.Creatives</a>
         </div>
+      </div>
     </div>
   )
 }

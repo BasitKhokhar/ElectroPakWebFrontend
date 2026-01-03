@@ -14,7 +14,7 @@ const Navbar = ({ userId }) => {
   const [isSignupFormOpen, setIsSignupFormOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false); // New state for Checkout
   const location = useLocation();
-  
+
   // Ref for the cart dropdown
   const cartRef = useRef(null);
   const navbarRef = useRef(null);
@@ -30,7 +30,7 @@ const Navbar = ({ userId }) => {
     setIsLoginFormOpen(true);
     setIsSignupFormOpen(false);
   };
-  
+
   const toggleSignupForm = () => {
     setIsSignupFormOpen(true);
     setIsLoginFormOpen(false);
@@ -38,6 +38,11 @@ const Navbar = ({ userId }) => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const closeAuthForms = () => {
+    setIsLoginFormOpen(false);
+    setIsSignupFormOpen(false);
   };
 
   const toggleCart = () => {
@@ -103,98 +108,96 @@ const Navbar = ({ userId }) => {
     };
   }, [isOpen]);
   return (
-    <nav className="bg-[#282828] fixed w-full z-10 top-0 shadow border-b">
+    <nav className="bg-gradient-blue-sky fixed w-full z-10 top-0 shadow-lg border-b border-white/10 transition-all duration-300">
       <div className="container mx-auto flex items-center justify-between p-4 ">
         {/* Left side: Logo */}
-        <div className="text-white font-bold text-xl">
+        <div className="text-text font-bold text-xl">
           <Link to="/">
-            {logoimage && logoimage.map((item) => (
+            {/* {logoimage && logoimage.map((item) => (
               <div key={item.id}>
                 <img src={item.image_url} alt="" className="h-14" />
               </div>
-            ))}
+            ))} */}
+            <img src="src/assets/logo2.png" alt="" className="h-14" />
           </Link>
         </div>
 
         {/* Middle: Nav Links */}
         <div className="hidden md:flex space-x-6">
-          <Link to="/" className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${isActive('/') ? 'bg-white text-[#282828] rounded-full' : 'text-white'}`}>Home</Link>
-          <Link to="/products" className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${isActive('/products') ? 'bg-white text-[#282828] rounded-full' : 'text-white'}`}>Products</Link>
-          <Link to="/services" className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${isActive('/services') ? 'bg-white text-[#282828] rounded-full' : 'text-white'}`}>Services</Link>
-          <Link to="/contact" className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${isActive('/contact') ? 'bg-white text-[#282828] rounded-full' : 'text-white'}`}>Contact</Link>
-          <Link to="/about" className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${isActive('/about') ? 'bg-white text-[#282828] rounded-full' : 'text-white'}`}>About Us</Link>
+          <Link to="/" className={`px-4 py-2 transition-all duration-300 font-medium ${isActive('/') ? 'bg-white/20 text-white rounded-full shadow-lg border border-white/30' : 'text-white/90 hover:text-white hover:bg-white/10 rounded-full'}`}>Home</Link>
+          <Link to="/products" className={`px-4 py-2 transition-all duration-300 font-medium ${isActive('/products') ? 'bg-white/20 text-white rounded-full shadow-lg border border-white/30' : 'text-white/90 hover:text-white hover:bg-white/10 rounded-full'}`}>Products</Link>
+          <Link to="/services" className={`px-4 py-2 transition-all duration-300 font-medium ${isActive('/services') ? 'bg-white/20 text-white rounded-full shadow-lg border border-white/30' : 'text-white/90 hover:text-white hover:bg-white/10 rounded-full'}`}>Services</Link>
+          <Link to="/contact" className={`px-4 py-2 transition-all duration-300 font-medium ${isActive('/contact') ? 'bg-white/20 text-white rounded-full shadow-lg border border-white/30' : 'text-white/90 hover:text-white hover:bg-white/10 rounded-full'}`}>Contact</Link>
+          <Link to="/about" className={`px-4 py-2 transition-all duration-300 font-medium ${isActive('/about') ? 'bg-white/20 text-white rounded-full shadow-lg border border-white/30' : 'text-white/90 hover:text-white hover:bg-white/10 rounded-full'}`}>About Us</Link>
         </div>
 
         {/* Icons */}
         <div className="hidden md:flex space-x-4">
-          <button onClick={toggleCart} className="text-white border-none hover:border-none hover:text-[#282828] bg-transparent hover:bg-white rounded-full p-2 transition-all duration-300">
-            <FaShoppingCart size={24} />
+          <button onClick={toggleCart} className="text-white border-none hover:bg-white/20 rounded-full p-2.5 transition-all duration-300">
+            <FaShoppingCart size={22} />
           </button>
-          <button onClick={toggleLoginForm} className="text-white border-none hover:border-none hover:text-[#282828] bg-transparent hover:bg-white rounded-full p-2 transition-all duration-300">
-            <FaUser size={24} />
+          <button onClick={toggleLoginForm} className="text-white border-none hover:bg-white/20 rounded-full p-2.5 transition-all duration-300">
+            <FaUser size={22} />
           </button>
         </div>
 
         {/* Menu for small screens */}
         <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-[#282828] bg-white border-none hover:border-none p-2 rounded-full focus:outline-none transition-all duration-700">
+          <button onClick={toggleMenu} className="text-white bg-white/10 border border-white/20 p-2 rounded-xl focus:outline-none transition-all duration-300 hover:bg-white/20">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
           </button>
         </div>
       </div>
-      <div ref={navbarRef} className={`${isOpen ? 'block' : 'hidden'} md:hidden bg-[#282828] mt-2 flex flex-col`} >
+      <div ref={navbarRef} className={`${isOpen ? 'block' : 'hidden'} md:hidden bg-gradient-blue-sky border-t border-white/10 mt-2 flex flex-col p-4 space-y-2 transition-all duration-300`} >
         <Link to="/" onClick={closeMenu}
-          className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${ isActive('/') ? 'bg-white text-[#282828] rounded-full' : 'text-white'
-          }`}>
+          className={`p-3 transition-all duration-300 font-medium ${isActive('/') ? 'bg-white/20 text-white rounded-xl shadow-lg border border-white/30' : 'text-white/90 hover:bg-white/10 hover:rounded-xl'
+            }`}>
           Home
         </Link>
         <Link to="/products" onClick={closeMenu}
-          className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${
-            isActive('/products') ? 'bg-white text-[#282828] rounded-full' : 'text-white'
-          }`}>
+          className={`p-3 transition-all duration-300 font-medium ${isActive('/products') ? 'bg-white/20 text-white rounded-xl shadow-lg border border-white/30' : 'text-white/90 hover:bg-white/10 hover:rounded-xl'
+            }`}>
           Products
         </Link>
         <Link to="/services" onClick={closeMenu}
-          className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${
-            isActive('/services') ? 'bg-white text-[#282828] rounded-full' : 'text-white'
-          }`}>
+          className={`p-3 transition-all duration-300 font-medium ${isActive('/services') ? 'bg-white/20 text-white rounded-xl shadow-lg border border-white/30' : 'text-white/90 hover:bg-white/10 hover:rounded-xl'
+            }`}>
           Services
         </Link>
         <Link to="/contact" onClick={closeMenu}
-          className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${
-            isActive('/contact') ? 'bg-white text-[#282828] rounded-full' : 'text-white'
-          }`}>
+          className={`p-3 transition-all duration-300 font-medium ${isActive('/contact') ? 'bg-white/20 text-white rounded-xl shadow-lg border border-white/30' : 'text-white/90 hover:bg-white/10 hover:rounded-xl'
+            }`}>
           Contact
         </Link>
         <Link to="/about" onClick={closeMenu}
-          className={`text-[#282828] hover:text-[#282828] hover:bg-white hover:rounded-full p-2 transition-all duration-300 ${
-            isActive('/about') ? 'bg-white text-[#282828] rounded-full' : 'text-white'
-          }`}>
+          className={`p-3 transition-all duration-300 font-medium ${isActive('/about') ? 'bg-white/20 text-white rounded-xl shadow-lg border border-white/30' : 'text-white/90 hover:bg-white/10 hover:rounded-xl'
+            }`}>
           About Us
         </Link>
-        {/* Cart and Login icons in mobile view */}
-        <Link to="/cart" onClick={toggleCart}
-          className="text-white border-none hover:text-[#282828] hover:bg-white hover:rounded-full p-2 flex items-center justify-center transition-all duration-300">
-          <FaShoppingCart size={20} />
-          <span className="ml-2">Cart</span>
-        </Link>
-        <Link to="/login" onClick={toggleLoginForm}
-          className="text-white border-none hover:text-[#282828] hover:bg-white hover:rounded-full p-2 flex items-center justify-center transition-all duration-300">
-          <FaUser size={20} />
-          <span className="ml-2">Login</span>
-        </Link>
+        <div className="border-t border-white/10 mt-2 pt-2 flex space-x-4">
+          <Link to="/cart" onClick={toggleCart}
+            className="flex-1 text-white border border-white/20 hover:bg-white/10 p-3 rounded-xl flex items-center justify-center transition-all duration-300">
+            <FaShoppingCart size={20} className="text-white" />
+            <span className="ml-2">Cart</span>
+          </Link>
+          <button onClick={toggleLoginForm}
+            className="flex-1 text-white border border-white/20 hover:bg-white/10 p-3 rounded-xl flex items-center justify-center transition-all duration-300">
+            <FaUser size={20} className="text-white" />
+            <span className="ml-2">Login</span>
+          </button>
+        </div>
       </div>
       {/* Cart Dropdown */}
       {isCartOpen && (
         <div ref={cartRef} className="absolute top-20 left-1/2 transform -translate-x-1/2 transition duration-500 shadow-lg p-2 w-full sm:w-full md:w-full lg:w-2/4 bg-white">
-          <Cart cartItems={cartItems} loggedInUserId={userId} onCheckout={handleCheckout} closeCart={closeCart}/> {/* Pass handleCheckout to Cart */}
+          <Cart cartItems={cartItems} loggedInUserId={userId} onCheckout={handleCheckout} closeCart={closeCart} /> {/* Pass handleCheckout to Cart */}
         </div>
       )}
       {/* Conditionally render login or signup forms */}
-      {isLoginFormOpen && <LoginForm toggleSignupForm={toggleSignupForm} />}
-      {isSignupFormOpen && <SignupForm toggleLoginForm={toggleLoginForm} />}   
+      {isLoginFormOpen && <LoginForm toggleSignupForm={toggleSignupForm} onClose={closeAuthForms} />}
+      {isSignupFormOpen && <SignupForm toggleLoginForm={toggleLoginForm} onClose={closeAuthForms} />}
       {/* Checkout Component - render it conditionally based on the state */}
       {isCheckoutOpen && (
         <div className="absolute top-20 left-1/2 transform -translate-x-1/2 shadow-lg p-4 w-full sm:w-full md:w-full lg:w-2/4 bg-white">

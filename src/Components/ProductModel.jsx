@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
-  console.log('data coming in productmodel',userid,product)
+  console.log('data coming in productmodel', userid, product)
   // const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
 
@@ -11,16 +11,16 @@ const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
       ...product,
       selectedColor,
       quantity: 1,
-      user_id: userid, 
+      user_id: userid,
     };
-    
+
     try {
       const response = await fetch(`${API_BASE_URL}/cart`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productWithOptions),
       });
-  
+
       if (response.ok) {
         onAddToCart(productWithOptions); // Pass product with options
         onClose(); // Close the modal after adding to cart
@@ -31,42 +31,82 @@ const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
       console.error('Error:', error);
     }
   };
-console.log(userid)
-console.log(product)
+  console.log(userid)
+  console.log(product)
   return (
-    <div className="fixed inset-0 flex  items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2">
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-600">
-          <FaTimes size={20} />
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-text/40 backdrop-blur-md transition-all duration-300">
+      <div className="bg-cardsBackground rounded-[2.5rem] shadow-2xl p-8 w-[95%] max-w-4xl relative border border-border animate-in fade-in zoom-in duration-300 overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/5 rounded-full blur-3xl"></div>
+
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 text-mutedText hover:text-text hover:bg-background p-2 rounded-full transition-all duration-300 z-10"
+        >
+          <FaTimes size={24} />
         </button>
-        <div className="flex flex-col sm:flex-col md:flex-row lg:flex-row justify-center items-center">
-          <img src={product.image_url} alt={product.name} className="w-1/2 h-auto" />
-          <div className="ml-4 text-left">
-            <h2 className="text-xl font-bold text-left">Name: {product.name}</h2>
-            <p className="mt-2 font-semibold">Stock: {product.stock}</p>
-            <div className="mt-4">
-              <label className="block font-semibold">Color:</label>
-              <select
-                value={selectedColor}
-                onChange={(e) => setSelectedColor(e.target.value)}
-                className="border rounded p-1"
-              >
-                <option value="None">None</option>
-                <option value="White">White</option>
-                <option value="Half White">Half White</option>
-                <option value="Chrome">Chrome</option>
-                <option value="Light Pink">Light Pink</option>
-                <option value="Light Grey">Light Grey</option>
-                <option value="Burgandy">Burgandy</option>
-                {/*if want to Add other color options */}
-              </select>
+
+        <div className="flex flex-col md:flex-row gap-10 items-center relative">
+          {/* Image Section */}
+          <div className="w-full md:w-1/2 p-4 bg-background rounded-3xl border border-border/50 shadow-inner group">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105 mx-auto"
+            />
+          </div>
+
+          {/* Details Section */}
+          <div className="w-full md:w-1/2 flex flex-col gap-6 text-left">
+            <div>
+              <span className="text-primary font-bold tracking-widest text-xs uppercase">Product Details</span>
+              <h2 className="text-3xl font-extrabold text-text mt-1">{product.name}</h2>
+              <div className="flex items-center gap-4 mt-2">
+                <span className="text-3xl font-black text-primary">${product.price}</span>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${product.stock > 0 ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}`}>
+                  {product.stock > 0 ? `${product.stock} Units left` : 'Out of Stock'}
+                </span>
+              </div>
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="mt-4 bg-[#282828] border-2 border-[#282828] text-white p-2 rounded hover:bg-white hover:text-[#282828] hover:border-[#282828] transition duration-300"
-            >
-              Add to Cart
-            </button>
+
+            <p className="text-mutedText leading-relaxed">
+              Experience the pinnacle of technology with the {product.name}. Designed for performance and reliability.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-text mb-2 ml-1">Select Customization</label>
+                <div className="relative">
+                  <select
+                    value={selectedColor}
+                    onChange={(e) => setSelectedColor(e.target.value)}
+                    className="w-full bg-background border border-border text-text rounded-xl p-3 appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer font-medium"
+                  >
+                    <option value="None">Default Color</option>
+                    <option value="White">Pure White</option>
+                    <option value="Half White">Soft Pearl</option>
+                    <option value="Chrome">Metallic Chrome</option>
+                    <option value="Light Pink">Rose Quartz</option>
+                    <option value="Light Grey">Modern Grey</option>
+                    <option value="Burgandy">Deep Burgundy</option>
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-mutedText">
+                    ▼
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4 pt-4 mt-auto">
+              <button
+                onClick={handleAddToCart}
+                disabled={product.stock <= 0}
+                className="flex-1 bg-primary text-white font-bold py-4 rounded-2xl hover:bg-hover transition-all shadow-xl shadow-primary/25 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                Add to Shopping Bag
+              </button>
+            </div>
           </div>
         </div>
       </div>

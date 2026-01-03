@@ -3,11 +3,12 @@ import ProductModal from './ProductModel';
 import Loader from './Loader';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import SkeletonLoader from './SkeletonLoader'; 
+import { FaShoppingCart } from 'react-icons/fa';
+import SkeletonLoader from './SkeletonLoader';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export default function OnSaleProducts({loggedInUserId}) {
-    console.log("userid in Onsaleproducts:", loggedInUserId)
+export default function OnSaleProducts({ loggedInUserId }) {
+  console.log("userid in Onsaleproducts:", loggedInUserId)
   useEffect(() => {
     AOS.init({
       duration: 1200,
@@ -34,14 +35,14 @@ export default function OnSaleProducts({loggedInUserId}) {
       .then(data => {
         setProductsData({ productsData: data });
         setLoading(false);
-        console.log("onsaleproducts",data)
+        console.log("onsaleproducts", data)
       })
       .catch(error => {
         console.error('Error fetching products:', error);
         setLoading(false);
       });
   }, []);
-  
+
   useEffect(() => {
     setFilteredProducts(
       productsdata.productsData.filter(product =>
@@ -53,14 +54,14 @@ export default function OnSaleProducts({loggedInUserId}) {
   const handleImageLoad = (productId) => {
     setImageLoading((prevState) => ({
       ...prevState,
-      [productId]: false, 
+      [productId]: false,
     }));
   };
 
   const handleImageError = (productId) => {
     setImageLoading((prevState) => ({
       ...prevState,
-      [productId]: false, 
+      [productId]: false,
     }));
   };
 
@@ -92,64 +93,82 @@ export default function OnSaleProducts({loggedInUserId}) {
     setSelectedProduct(null);
   };
   return (
-    <div className="mx-4 sm:mx-4 md:mx-6 lg:mx-14 mb-10">
-      <h1 className="text-3xl font-bold mt-12 mb-10">On Sale Products</h1>
-      {/* Search Bar */}
-      {/* <div className="flex justify-end mb-4">
-        <input
-          type="text"
-          placeholder="Search products..."
-          className="border rounded p-2 w-full md:w-1/3"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div> */}
-      {/* Product Table */}
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <tbody className="grid justify-center items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {currentProducts.map((product) => (
-              <tr
-                key={product.id}
-                className="flex flex-col border-none text-black relative rounded-lg shadow-lg hover:bg-gray-300 transition duration-300"
-                onMouseEnter={() => setHoveredProduct(product.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
-              >
-                <td className="p-4 border rounded-lg flex flex-col gap-2 text-left box-border" data-aos="zoom-in">
-                  {/* Image with Skeleton Loader */}
-                  <div className="w-full h-64 relative">
-                    {imageLoading[product.id] !== false && (
-                      <div className="bg-gray-300 animate-pulse w-full h-full absolute top-0 left-0"></div> // Skeleton loader
-                    )}
-                    <img src={product.product.image_url} alt="Product Image" className="w-full h-full object-cover"
-                      style={imageLoading[product.id] === false ? {} : { display: 'none' }} // Hide image until loaded
-                      onLoad={() => handleImageLoad(product.id)} onError={() => handleImageError(product.id)}/>
-                  </div>
-                  <span className="font-bold text-lg">Name: <span className="text-base font-medium">{product.product.name}</span></span>
-                  <span className="font-bold flex gap-2">Price: <span className="text-base font-medium line-through text-red-600">{product.product.price}</span><span>{product.new_price}</span></span>
-                  <span className="font-bold">Stock: <span className="text-base font-medium">{product.product.stock}</span></span>
+    <div className="mx-4 sm:mx-4 md:mx-6 lg:mx-20 mb-10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+        <div>
+          <h2 className="text-3xl font-extrabold text-text tracking-tight">On Sale Now</h2>
+          <p className="text-mutedText font-medium">Limited time offers you can't miss.</p>
+        </div>
+        <div className="h-1 w-20 bg-error rounded-full"></div>
+      </div>
 
-                  {/* Add to Cart Icon */}
-                  {hoveredProduct === product.id && (
-                    <button className="absolute top-2 right-2 bg-[#282828] text-white p-2 rounded-full"
-                      onClick={() => handleAddToCartClick(product)}>
-                      🛒
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {currentProducts.map((product) => (
+          <div
+            key={product.id}
+            className="group bg-cardsBackground border border-border rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 flex flex-col relative"
+            onMouseEnter={() => setHoveredProduct(product.id)}
+            onMouseLeave={() => setHoveredProduct(null)}
+            data-aos="fade-up"
+          >
+            {/* Sale Badge */}
+            <div className="absolute top-4 left-4 z-10 bg-error text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg">
+              SALE
+            </div>
+
+            {/* Image Container */}
+            <div className="relative aspect-square overflow-hidden bg-background">
+              {imageLoading[product.id] !== false && (
+                <div className="absolute inset-0 bg-border animate-pulse"></div>
+              )}
+              <img
+                src={product.product.image_url}
+                alt={product.product.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                onLoad={() => handleImageLoad(product.id)}
+                onError={() => handleImageError(product.id)}
+              />
+
+              {/* Overlay with Actions */}
+              <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/60 to-transparent flex justify-center">
+                <button
+                  className="bg-primary hover:bg-hover text-white px-6 py-2 rounded-full font-bold shadow-lg transition-colors flex items-center gap-2"
+                  onClick={() => handleAddToCartClick(product)}
+                >
+                  <FaShoppingCart />
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+
+            {/* Product Details */}
+            <div className="p-6 flex flex-col flex-1">
+              <h3 className="text-lg font-bold text-text mb-1 line-clamp-1 group-hover:text-primary transition-colors">{product.product.name}</h3>
+              <div className="mt-auto pt-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl font-extrabold text-error">${product.new_price}</span>
+                  <span className="text-base text-mutedText line-through opacity-70">${product.product.price}</span>
+                </div>
+                <div className="mt-2 text-xs font-bold text-success">
+                  {product.product.stock > 0 ? `Limited Stock: ${product.product.stock} left` : 'Out of Stock'}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-12 gap-2">
         {Array.from({ length: Math.ceil(filteredProducts.length / productsPerPage) }, (_, index) => (
           <button
             key={index + 1}
             onClick={() => paginate(index + 1)}
-            className={`px-3 py-1 border mx-1 ${currentPage === index + 1 ? 'bg-[#282828] text-white' : 'bg-white'}`}>
+            className={`w-10 h-10 rounded-xl border transition-all duration-300 font-bold ${currentPage === index + 1
+              ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+              : 'bg-cardsBackground border-border text-mutedText hover:border-primary hover:text-primary'
+              }`}
+          >
             {index + 1}
           </button>
         ))}
