@@ -63,7 +63,7 @@ export default function Footer() {
                 return (
                   <div key={item.id} data-aos="fade-up" className="relative">
                     <div className="absolute -inset-2 bg-white/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <img src={item.image_url} alt="ElectroPak Logo" className='relative h-14' />
+                    <img src={'src/assets/logo2.png'} alt="ElectroPak Logo" className='relative h-14' />
                   </div>
                 )
               })

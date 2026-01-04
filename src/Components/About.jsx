@@ -4,8 +4,8 @@ import Loader from './Loader';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-export default function About() {
 
+export default function About() {
   useEffect(() => {
     AOS.init({
       duration: 1200,
@@ -19,6 +19,7 @@ export default function About() {
     aboutmissionData: [],
   });
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     setLoading(true);
     const apiEndpoints = [
@@ -49,74 +50,101 @@ export default function About() {
       })
       .finally(() => setLoading(false));
   }, []);
+
   if (loading) {
-    return <Loader />
+    return <div className="min-h-screen flex items-center justify-center bg-background"><Loader /></div>
   }
-  console.log('About Page data:', aboutdata)
+
   return (
-    <div className='mx-4 sm:mx-4 md:mx-6 lg:mx-14'>
-      <h1 className='text-3xl font-bold mt-32' data-aos="fade-up">About Us</h1>
-      {/* aboutus para */}
-      <div className=' flex flex-col sm:flex-col md:flex-col lg:flex-row gap-4'>
-        <div className='w-full sm:w-full md:w-full lg:w-2/4 mt-12'>
-          { aboutdata.aboutimageData && aboutdata.aboutimageData.map((item) => {
-              return (
-                <div className=' h-[50vh] lg:h-[70vh]' key={item.id} data-aos="zoom-in">
-                  <img src={item.image_url} alt="" className=' w-full h-full rounded ' />
-                </div>
-              )
-            })
-          }
+    <div className='relative overflow-hidden bg-background'>
+      {/* Decorative Background Elements */}
+      <div className="absolute top-20 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-40 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className='max-w-[1400px] mx-auto px-6 lg:px-14 py-32 relative z-10'>
+        {/* Header Section */}
+        <div className="mb-16" data-aos="fade-right">
+          <span className="text-primary font-bold tracking-widest text-sm uppercase mb-3 block">Our Story</span>
+          <h1 className='text-5xl font-extrabold text-text tracking-tight'>About Us</h1>
+          <div className='h-2 w-24 bg-primary mt-6 rounded-full'></div>
         </div>
-        <div className='flex flex-col gap-2 sm:w-full md:w-full  lg:w-2/3 font-medium text-left mt-11'>
-          {
-            aboutdata.aboutusData && aboutdata.aboutusData.map((items) => {
-              return (
-                <div key={items.id} data-aos="fade-up" className=' py-1'>
-                  {items.about_us}
-                </div>
-              )
-            })
-          }
-        </div>
-      </div>
-      {/* aboutmission & vission para */}
-      <div >
-        <div><h1 className='text-3xl font-bold my-6'>Mission & Vission</h1></div>
-        <div className=' flex flex-col sm:flex-col md:flex-col lg:flex-row gap-4 my-6 text-left  '>
-          {
-            aboutdata.aboutmissionData && aboutdata.aboutmissionData.map((items) => {
-              return (
-                <div className='rounded-md' key={items.id} data-aos="zoom-in">
-                  <div className='border bg-[#282828] text-white text- p-4 rounded-lg'>{items.aboutmission}</div>
-                </div>
-              )
-            })
-          }
-        </div>
-      </div>
-      {/* owners list */}
-      <div className=' mb-8'>
-        {
-          aboutdata.aboutMsgsData && aboutdata.aboutMsgsData.map((items) => {
-            return (
-              <div key={items.id} >
-                <div className=' bg-[#AA6231] inline-block text-white px-5 py-3 font-bold my-6 rounded ' data-aos="fade-up">{items.Position}</div>
-                <div className='grid gap-4 sm:grid-cols-1  md:grid-cols1 lg:grid-cols-2'>
-                  <div className=' flex justify-center' data-aos="zoom-in">
-                    <img key={items.id} src={items.image_url} alt="" className=' w-2/4 rounded border-gray-400 border p-3' />
-                  </div>
-                  <div className=' flex flex-col text-left justify-center'>
-                    <div className=' text-xl font-bold' data-aos="fade-up"><h2>{items.name}</h2></div>
-                    <div data-aos="fade-up">{items.description}</div>
-                    <div className=' mt-2'><span className=' text-lg font-semibold'>Contact: </span> {items.contact}</div>
-                  </div>
+
+        {/* Introduction Section */}
+        <div className='flex flex-col lg:flex-row gap-12 items-center mb-24'>
+          <div className='w-full lg:w-1/2'>
+            {aboutdata.aboutimageData && aboutdata.aboutimageData.map((item) => (
+              <div key={item.id} className='relative group' data-aos="zoom-in">
+                <div className="absolute -inset-4 bg-primary/10 rounded-[3rem] blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+                <div className="relative h-[400px] lg:h-[600px] rounded-[2.5rem] overflow-hidden border border-border shadow-2xl">
+                  <img
+                    src={"src/assets/electropakwebaboutimage.jpg"}
+                    alt="About ElectroPak"
+                    className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
+                  />
                 </div>
               </div>
-            )
-          })
-        }
+            ))}
+          </div>
+
+          <div className='w-full lg:w-1/2 flex flex-col gap-6 text-left' data-aos="fade-left">
+            <h2 className="text-3xl font-bold text-text">Driving Innovation in Engineering</h2>
+            <div className="space-y-4">
+              {aboutdata.aboutusData && aboutdata.aboutusData.map((items) => (
+                <div key={items.id} className='text-lg text-mutedText leading-relaxed'>
+                  {items.about_us}
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-6 mt-8">
+              <div className="p-6 bg-cardsBackground rounded-3xl border border-border shadow-sm">
+                <span className="text-3xl font-black text-primary block mb-2">15+</span>
+                <span className="text-sm font-bold text-mutedText uppercase tracking-wider">Years Experience</span>
+              </div>
+              <div className="p-6 bg-cardsBackground rounded-3xl border border-border shadow-sm">
+                <span className="text-3xl font-black text-primary block mb-2">500+</span>
+                <span className="text-sm font-bold text-mutedText uppercase tracking-wider">Happy Clients</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mission & Vision Section */}
+        <div className="relative">
+          <div className="mb-12" data-aos="fade-up">
+            <h2 className='text-4xl font-extrabold text-text tracking-tight'>Mission & Vision</h2>
+            <div className='h-1.5 w-16 bg-primary mt-4 rounded-full'></div>
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+            {aboutdata.aboutmissionData && aboutdata.aboutmissionData.map((items, index) => (
+              <div
+                key={items.id}
+                className={`relative p-10 rounded-[2.5rem] overflow-hidden group shadow-xl transition-all duration-500 hover:-translate-y-2 ${index % 2 === 0 ? 'bg-gradient-blue-sky' : 'bg-gradient-blue-pulse'}`}
+                data-aos="zoom-in"
+                data-aos-delay={index * 100}
+              >
+                {/* Decorative Pattern */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-white/20 transition-colors"></div>
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-6 border border-white/30 text-white">
+                    {index % 2 === 0 ? (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    ) : (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    )}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-4">{index % 2 === 0 ? 'Our Mission' : 'Our Vision'}</h3>
+                  <p className='text-white/90 text-lg leading-relaxed font-medium'>
+                    {items.aboutmission}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+

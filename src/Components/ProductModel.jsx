@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaSpinner, FaCheckCircle } from 'react-icons/fa';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
   console.log('data coming in productmodel', userid, product)
   // const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleAddToCart = async () => {
+    setIsLoading(true);
     const productWithOptions = {
       ...product,
       selectedColor,
       quantity: 1,
       user_id: userid,
     };
-
+    console.log("payload sending to cart", productWithOptions)
     try {
       const response = await fetch(`${API_BASE_URL}/cart`, {
         method: 'POST',
@@ -23,12 +26,18 @@ const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
 
       if (response.ok) {
         onAddToCart(productWithOptions); // Pass product with options
-        onClose(); // Close the modal after adding to cart
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+          onClose(); // Close the modal after adding to cart
+        }, 2000);
       } else {
         console.error('Failed to add product to cart');
       }
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
   console.log(userid)
@@ -36,6 +45,21 @@ const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-text/40 backdrop-blur-md transition-all duration-300">
       <div className="bg-cardsBackground rounded-[2.5rem] shadow-2xl p-8 w-[95%] max-w-4xl relative border border-border animate-in fade-in zoom-in duration-300 overflow-hidden">
+        {/* Success Message Modal */}
+        {showSuccess && (
+          <div className="absolute inset-0 flex items-center justify-center z-[60] bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="bg-cardsBackground p-8 rounded-[2.5rem] border border-border shadow-2xl flex flex-col items-center gap-4 animate-in zoom-in duration-300">
+              <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center text-success">
+                <FaCheckCircle size={48} />
+              </div>
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-text">Item Added!</h3>
+                <p className="text-mutedText mt-1">Your product has been added to cart</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Decorative Background Elements */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/5 rounded-full blur-3xl"></div>
@@ -101,10 +125,17 @@ const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
             <div className="flex gap-4 pt-4 mt-auto">
               <button
                 onClick={handleAddToCart}
-                disabled={product.stock <= 0}
-                className="flex-1 bg-primary text-white font-bold py-4 rounded-2xl hover:bg-hover transition-all shadow-xl shadow-primary/25 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                disabled={product.stock <= 0 || isLoading}
+                className="flex-1 bg-primary text-white font-bold py-4 rounded-2xl hover:bg-hover transition-all shadow-xl shadow-primary/25 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-[60px]"
               >
-                Add to Shopping Bag
+                {isLoading ? (
+                  <>
+                    <FaSpinner className="animate-spin text-xl" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  'Add to Shopping Bag'
+                )}
               </button>
             </div>
           </div>

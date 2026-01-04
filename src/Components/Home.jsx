@@ -91,7 +91,7 @@ export default function Home({ loggedInUserId }) {
                 </div>
                 <div className='relative group' data-aos="zoom-in">
                   <div className="absolute -inset-4 bg-gradient-blue-sky/10 rounded-[2.5rem] blur-2xl group-hover:bg-gradient-blue-sky/20 transition-all duration-500"></div>
-                  <img src={items.image_url} alt="" className='relative w-full h-[450px] object-cover rounded-[2rem] shadow-2xl border border-white/20' />
+                  <img src={'src/assets/electropakwebhomeparagraphimafe.jpg'} alt="" className='relative w-full h-[450px] object-cover rounded-[2rem] shadow-2xl border border-white/20' />
                 </div>
               </div>
             )

@@ -6,7 +6,7 @@ const FormComponent = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        phone: '', 
+        phone: '',
         description: ''
     });
     const [emailError, setEmailError] = useState(false);
@@ -27,9 +27,9 @@ const FormComponent = () => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         // Do not show red border if the field is empty
         if (email === '') {
-            setEmailError(false);  
+            setEmailError(false);
         } else {
-            setEmailError(!emailPattern.test(email));  
+            setEmailError(!emailPattern.test(email));
         }
     };
     // Handle form submission
@@ -37,7 +37,7 @@ const FormComponent = () => {
         e.preventDefault();
         if (emailError) {
             alert('Please enter a valid email address.');
-            return; 
+            return;
         }
         setLoading(true);
         fetch(`${API_BASE_URL}/submit`, {
@@ -65,41 +65,89 @@ const FormComponent = () => {
     };
 
     return (
-        <div className=" mx-auto">
-            <form onSubmit={Submit} className="bg-[#282828] text-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div className="text-black text-sm font-bold pb-2">
-                    <h1 className='text-3xl text-white'>Contact Us For Any Queries!</h1>
-                </div>
-                <div className=' flex gap-4 mt-3'>
-                    <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2 text-left" htmlFor="name">Name:</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            required/>
+        <div className="mx-auto w-full">
+            <form onSubmit={Submit} className="bg-cardsBackground text-text shadow-2xl rounded-[2.5rem] p-10 border border-border relative overflow-hidden group">
+                {/* Decorative Background Elements */}
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-500"></div>
+                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/5 rounded-full blur-3xl group-hover:bg-accent/10 transition-colors duration-500"></div>
+
+                <div className="relative">
+                    <div className="mb-8">
+                        <span className="text-primary font-bold tracking-widest text-xs uppercase mb-2 block">Get in Touch</span>
+                        <h1 className="text-3xl font-extrabold text-text tracking-tight">Contact Us For Any Queries!</h1>
+                        <div className="h-1.5 w-16 bg-primary mt-4 rounded-full"></div>
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2 text-left" htmlFor="phone">Phone No:</label>
-                        <input type="text" name="phone" value={formData.phone} onChange={handleChange}   // <-- Fixed phone value here
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            required/>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                        <div className="space-y-2">
+                            <label className="block text-sm font-bold text-text ml-1" htmlFor="name">Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="Your full name"
+                                className="w-full bg-background border border-border text-text rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-mutedText/50"
+                                required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-bold text-text ml-1" htmlFor="phone">Phone No</label>
+                            <input
+                                type="text"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                placeholder="e.g. +1 234 567 890"
+                                className="w-full bg-background border border-border text-text rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-mutedText/50"
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2 text-left" htmlFor="email">Email:</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange}
-                        className={`shadow appearance-none border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                        required/>
-                </div>
-                <div className="mb-6">
-                    <label className="block text-sm font-bold mb-2 text-left" htmlFor="description">Description:</label>
-                    <textarea name="description" value={formData.description} onChange={handleChange} maxLength="1500"
-                        className="shadow appearance-none border rounded w-full h-32 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required/>
-                </div>
-                <div className="flex items-center justify-between">
-                    <button type="submit" className="bg-[#00a97c] text-white rounded-full border-2 border-[#00a97c] hover:bg-[#282828]  hover:border-white  font-bold py-2 w-full rounded transition duration-300"
-                        disabled={loading}> {loading ? 'Submitting...' : 'Submit'}
-                    </button>
+
+                    <div className="mt-6 space-y-2">
+                        <label className="block text-sm font-bold text-text ml-1" htmlFor="email">Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="your@email.com"
+                            className={`w-full bg-background border ${emailError ? 'border-error' : 'border-border'} text-text rounded-xl py-3 px-4 focus:ring-2 ${emailError ? 'focus:ring-error/20 focus:border-error' : 'focus:ring-primary/20 focus:border-primary'} outline-none transition-all placeholder:text-mutedText/50`}
+                            required
+                        />
+                        {emailError && <p className="text-xs text-error mt-1 ml-1 font-medium">Please enter a valid email address.</p>}
+                    </div>
+
+                    <div className="mt-6 space-y-2">
+                        <label className="block text-sm font-bold text-text ml-1" htmlFor="description">Message</label>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            maxLength="1500"
+                            placeholder="How can we help you?"
+                            className="w-full bg-background border border-border text-text rounded-xl h-32 py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none placeholder:text-mutedText/50"
+                            required
+                        />
+                    </div>
+
+                    <div className="mt-8">
+                        <button
+                            type="submit"
+                            disabled={loading || emailError}
+                            className="w-full bg-primary text-white font-bold py-4 rounded-2xl hover:bg-hover active:scale-[0.98] transition-all shadow-xl shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            {loading ? (
+                                <>
+                                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                    Submitting...
+                                </>
+                            ) : (
+                                'Send Message'
+                            )}
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

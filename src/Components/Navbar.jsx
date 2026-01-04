@@ -108,7 +108,7 @@ const Navbar = ({ userId }) => {
     };
   }, [isOpen]);
   return (
-    <nav className="bg-gradient-blue-sky fixed w-full z-10 top-0 shadow-lg border-b border-white/10 transition-all duration-300">
+    <nav className="bg-gradient-blue-sky fixed w-full z-50 top-0 shadow-lg border-b border-white/10 transition-all duration-300">
       <div className="container mx-auto flex items-center justify-between p-4 ">
         {/* Left side: Logo */}
         <div className="text-text font-bold text-xl">

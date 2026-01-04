@@ -2,24 +2,24 @@ import React, { useEffect, useRef } from 'react';
 import Typed from 'typed.js';
 
 const TypingComponent = () => {
-    const line1 = useRef(null); 
-    const line2 = useRef(null); 
-    const line3 = useRef(null); 
+    const line1 = useRef(null);
+    const line2 = useRef(null);
+    const line3 = useRef(null);
     useEffect(() => {
         const typed1 = new Typed(line1.current, {
-            strings: ['Welcome to'], 
-            typeSpeed: 100,          
-            startDelay: 500,         
-            showCursor: false,       
-            onComplete: () => {             
+            strings: ['Welcome to'],
+            typeSpeed: 100,
+            startDelay: 500,
+            showCursor: false,
+            onComplete: () => {
                 new Typed(line2.current, {
-                    strings: ['Basit Sanitary Store'], 
+                    strings: ['ElectroPak Store'],
                     typeSpeed: 100,
                     startDelay: 500,
                     showCursor: false,
                     onComplete: () => {
                         new Typed(line3.current, {
-                            strings: ['Upgrade Your Space with Premium Sanitary Products'], 
+                            strings: ['Upgrade Your Homes with Premium Electronic Products'],
                             typeSpeed: 100,
                             startDelay: 500,
                             showCursor: false,

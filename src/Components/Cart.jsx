@@ -18,7 +18,7 @@ const Cart = ({ loggedInUserId, closeCart }) => {
     });
     const fetchCartItems = async () => {
       try {
-        const response = await fetch(`${API_BASE_UR}/cart/${loggedInUserId}`);
+        const response = await fetch(`${API_BASE_URL}/cart/${loggedInUserId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch cart items');
         }
@@ -31,10 +31,10 @@ const Cart = ({ loggedInUserId, closeCart }) => {
         setIsLoading(false);
       }
     };
-    console.log("userid in cart:" , loggedInUserId)
+    console.log("userid in cart:", loggedInUserId)
     const fetchUserName = async () => {
       try {
-        const response = await fetch(`${API_BASE_UR}/api/users/${loggedInUserId}`);
+        const response = await fetch(`${API_BASE_URL}/api/users/${loggedInUserId}`);
         const data = await response.json();
         if (response.ok) {
           setUserName(data.userName);
@@ -45,11 +45,11 @@ const Cart = ({ loggedInUserId, closeCart }) => {
         console.error('Error fetching user name:', error);
       }
     };
-  
+
     fetchCartItems();
     fetchUserName();
   }, [loggedInUserId]);
-  console.log("user_name in cart:" , userName)
+  console.log("user_name in cart:", userName)
   // Calculate the total amount whenever cartItems changes
   useEffect(() => {
     const calculateTotalAmount = () => {
@@ -63,7 +63,7 @@ const Cart = ({ loggedInUserId, closeCart }) => {
   // Handle removing an item from the cart
   const handleRemoveFromCart = async (cartId) => {
     try {
-      const response = await fetch(`${API_BASE_UR}/cart/${loggedInUserId}/${cartId}`, {
+      const response = await fetch(`${API_BASE_URL}/cart/${loggedInUserId}/${cartId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -80,7 +80,7 @@ const Cart = ({ loggedInUserId, closeCart }) => {
     if (newQuantity < 1) return; // Prevent quantity from going below 1
 
     try {
-      const response = await fetch(`${API_BASE_UR}/cart/${cartId}`, {
+      const response = await fetch(`${API_BASE_URL}/cart/${cartId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity: newQuantity, user_id: loggedInUserId }),

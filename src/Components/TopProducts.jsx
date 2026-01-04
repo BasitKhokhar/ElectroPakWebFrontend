@@ -20,7 +20,7 @@ export default function TopProducts({ productsData, loggedInUserId }) {
     useEffect(() => {
         AOS.init({ duration: 1000 });
         if (productsData && productsData.length > 0) {
-            setProducts(productsData.slice(0, 10));
+            setProducts(productsData.slice(0, 8));
             setLoading(false);
         } else {
             fetchTopProducts();
@@ -32,7 +32,7 @@ export default function TopProducts({ productsData, loggedInUserId }) {
             const response = await fetch(`${API_BASE_URL}/allproducts`);
             const data = await response.json();
             // Get only the first 10 products
-            setProducts(Array.isArray(data) ? data.slice(0, 10) : []);
+            setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
         } catch (error) {
             console.error('Error fetching top products:', error);
         } finally {
@@ -56,7 +56,7 @@ export default function TopProducts({ productsData, loggedInUserId }) {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div data-aos="fade-right">
                     <span className="text-primary font-bold tracking-widest text-sm uppercase mb-2 block">Featured Collection</span>
-                    <h2 className="text-4xl font-extrabold text-text tracking-tight">Top Rated Products</h2>
+                    <h2 className="text-4xl font-extrabold text-text tracking-tight">Explore Our Products</h2>
                     <div className="h-1.5 w-20 bg-primary mt-4 rounded-full"></div>
                 </div>
 
@@ -70,7 +70,7 @@ export default function TopProducts({ productsData, loggedInUserId }) {
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {products.map((product, index) => (
                     <div
                         key={product.id}
