@@ -14,6 +14,8 @@ import TypingComponent from './TypingComponent';
 import TrendingProducts from './TrendingProducts';
 import OnSaleProducts from './OnSaleProducts';
 import TopProducts from './TopProducts';
+import homeParaImage from '../assets/electropakwebhomeparagraphimafe.jpg';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Home({ loggedInUserId }) {
@@ -91,7 +93,8 @@ export default function Home({ loggedInUserId }) {
                 </div>
                 <div className='relative group' data-aos="zoom-in">
                   <div className="absolute -inset-4 bg-gradient-blue-sky/10 rounded-[2.5rem] blur-2xl group-hover:bg-gradient-blue-sky/20 transition-all duration-500"></div>
-                  <img src={'src/assets/electropakwebhomeparagraphimafe.jpg'} alt="" className='relative w-full h-[450px] object-cover rounded-[2rem] shadow-2xl border border-white/20' />
+                  <img src={homeParaImage} alt="" className='relative w-full h-[450px] object-cover rounded-[2rem] shadow-2xl border border-white/20' />
+
                 </div>
               </div>
             )

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import logo from '../assets/logo2.png'
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function Footer() {
 
@@ -63,7 +65,8 @@ export default function Footer() {
                 return (
                   <div key={item.id} data-aos="fade-up" className="relative">
                     <div className="absolute -inset-2 bg-white/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <img src={'src/assets/logo2.png'} alt="ElectroPak Logo" className='relative h-14' />
+                    <img src={logo} alt="ElectroPak Logo" className='relative h-14' />
+
                   </div>
                 )
               })

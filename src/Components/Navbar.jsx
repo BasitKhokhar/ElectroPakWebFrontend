@@ -4,6 +4,8 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import Cart from './Cart';
 import LoginForm from './Login/Login';
 import SignupForm from './Login/Signup';
+import logo from '../assets/logo2.png'
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Navbar = ({ userId }) => {
   const [logoimage, setLogoImage] = useState();
@@ -171,7 +173,8 @@ const Navbar = ({ userId }) => {
         {/* Left side: Logo */}
         <div className="text-text font-bold text-xl">
           <Link to="/">
-            <img src="src/assets/logo2.png" alt="" className="h-14" />
+            <img src={logo} alt="ElectroPak Logo" className="h-14" />
+
           </Link>
         </div>
 
