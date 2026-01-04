@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { storage } from '../firebase'; // Make sure your firebase.js is correctly exporting `storage`
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export default function CheckoutForm({ userId,shippingCost, finalTotal,cartItems }) {
-  console.log("data coming in checkout form", userId, shippingCost, finalTotal,cartItems )
+export default function CheckoutForm({ userId, totalAmount, shippingCost, finalTotal, cartItems }) {
+  const navigate = useNavigate();
+  console.log("data coming in checkout form", userId, shippingCost, finalTotal, cartItems)
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
@@ -69,25 +71,37 @@ export default function CheckoutForm({ userId,shippingCost, finalTotal,cartItems
     setLoading(true);
 
     const payload = {
-      ...formData,
-      receipt_url: imageUrl,userId, shippingCost, finalTotal,cartItems
+      name: formData.Fname,
+      phone: formData.phone,
+      email: formData.email,
+      city: formData.city,
+      address: formData.address,
+      receipt_url: imageUrl,
+      user_id: userId,
+      subtotal: totalAmount,
+      shipping_charges: shippingCost,
+      total_amount: finalTotal,
+      cart_items: cartItems,
+      source: 'Web'
     };
-
+    console.log("payload sending to backend", payload)
     try {
-      const res = await fetch(`${API_BASE_URL}/checkout_form`, {
+      const res = await fetch(`${API_BASE_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
       if (!res.ok) {
-        console.error('❌ Submission failed');
-        alert('Error submitting form');
+        const errorData = await res.json();
+        console.error('❌ Submission failed:', errorData.message);
+        alert(`Error: ${errorData.message || 'Failed to submit order'}`);
       } else {
-        alert('Form submitted successfully!');
+        alert('Your Order is in Progress. You will soon get Order Confirmation message!');
         setFormData({ Fname: '', email: '', phone: '', city: '', address: '' });
         setImageUrl(null);
         setSelectedFile(null);
+        navigate('/'); // Redirect to home after success
       }
     } catch (err) {
       console.error('❌ Network error:', err);
@@ -97,104 +111,132 @@ export default function CheckoutForm({ userId,shippingCost, finalTotal,cartItems
   };
 
   return (
-    <div className="mx-auto">
-      <form onSubmit={handleSubmit} className="bg-[#282828] text-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="text-black text-sm font-bold pb-2">
-          <h1 className="text-3xl text-white">Delivery</h1>
-        </div>
-
-        {/* Name */}
-        <div className="mb-4 w-full">
-          <label className="block text-sm font-bold mb-2 text-left" htmlFor="Fname">Name:</label>
-          <input
-            type="text"
-            name="Fname"
-            value={formData.Fname}
-            onChange={handleChange}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-          />
-        </div>
-
-        {/* Phone and Email */}
-        <div className="flex flex-col gap-4 mt-3 md:flex-row">
-          <div className="mb-4 w-full">
-            <label className="block text-sm font-bold mb-2 text-left" htmlFor="phone">Phone No:</label>
+    <div className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-sm font-bold mb-1.5 ml-1 text-text" htmlFor="Fname">Full Name</label>
             <input
               type="text"
-              name="phone"
-              value={formData.phone}
+              name="Fname"
+              placeholder="e.g. Basit Khokhar"
+              value={formData.Fname}
               onChange={handleChange}
               required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+              className="w-full bg-background border border-border rounded-xl py-3 px-4 text-text placeholder:text-mutedText/50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
             />
           </div>
-          <div className="mb-4 w-full">
-            <label className="block text-sm font-bold mb-2 text-left" htmlFor="email">Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className={`shadow appearance-none border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded w-full py-2 px-3 text-gray-700`}
-            />
-          </div>
-        </div>
 
-        {/* City and Address */}
-        <div className="flex flex-col gap-4 mt-3 md:flex-row">
-          <div className="mb-4 w-full">
-            <label className="block text-sm font-bold mb-2 text-left" htmlFor="city">City:</label>
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-            />
-          </div>
-          <div className="mb-4 w-full">
-            <label className="block text-sm font-bold mb-2 text-left" htmlFor="address">Address:</label>
-            <input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-            />
-          </div>
-        </div>
-
-        {/* Upload Image */}
-        <div className="mb-6">
-          <label className="block text-sm font-bold mb-2 text-left" htmlFor="receipt">Upload Receipt:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="text-white"
-          />
-          {uploading && <p className="text-yellow-400 mt-2">Uploading image...</p>}
-          {imageUrl && (<div className=' flex justify-center'>
-              <img src={imageUrl} alt="Uploaded Receipt" className="mt-4 w-[30%] h-[200px] max-w-sm rounded" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Phone */}
+            <div>
+              <label className="block text-sm font-bold mb-1.5 ml-1 text-text" htmlFor="phone">Phone Number</label>
+              <input
+                type="text"
+                name="phone"
+                placeholder="+92..."
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="w-full bg-background border border-border rounded-xl py-3 px-4 text-text placeholder:text-mutedText/50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              />
             </div>
-          
-          )}
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-bold mb-1.5 ml-1 text-text" htmlFor="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="name@example.com"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className={`w-full bg-background border rounded-xl py-3 px-4 text-text placeholder:text-mutedText/50 outline-none transition-all focus:ring-2 focus:ring-primary/20 ${emailError ? 'border-error animate-shake' : 'border-border focus:border-primary'}`}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* City */}
+            <div>
+              <label className="block text-sm font-bold mb-1.5 ml-1 text-text" htmlFor="city">City</label>
+              <input
+                type="text"
+                name="city"
+                placeholder="e.g. Lahore"
+                value={formData.city}
+                onChange={handleChange}
+                required
+                className="w-full bg-background border border-border rounded-xl py-3 px-4 text-text placeholder:text-mutedText/50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              />
+            </div>
+            {/* Address */}
+            <div>
+              <label className="block text-sm font-bold mb-1.5 ml-1 text-text" htmlFor="address">Address</label>
+              <input
+                type="text"
+                name="address"
+                placeholder="House #, Street..."
+                value={formData.address}
+                onChange={handleChange}
+                required
+                className="w-full bg-background border border-border rounded-xl py-3 px-4 text-text placeholder:text-mutedText/50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              />
+            </div>
+          </div>
+
+          {/* Upload Image */}
+          <div className="pt-2">
+            <label className="block text-sm font-bold mb-2 ml-1 text-text" htmlFor="receipt">Upload Payment Receipt</label>
+            <div className={`relative border-2 border-dashed rounded-2xl p-4 transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer ${uploading ? 'bg-primary/5 border-primary/50' : 'bg-background border-border hover:border-primary/50'}`}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="absolute inset-0 opacity-0 cursor-pointer z-10"
+              />
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <i className="fas fa-cloud-upload-alt text-xl"></i>
+              </div>
+              <p className="text-xs font-bold text-mutedText text-center">
+                {selectedFile ? selectedFile.name : 'Click or Drag receipt here'}
+              </p>
+              {uploading && (
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Uploading...</span>
+                </div>
+              )}
+            </div>
+
+            {imageUrl && (
+              <div className='flex justify-center mt-4 group relative'>
+                <div className="absolute -inset-2 bg-primary/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <img src={imageUrl} alt="Uploaded Receipt" className="relative w-24 h-24 object-cover rounded-xl border-2 border-white shadow-lg" />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Submit Button */}
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-[#00a97c] text-white rounded-full border-2 border-[#00a97c] hover:bg-[#282828]  hover:border-white font-bold py-2 w-full rounded transition duration-300"
-          >
-            {loading ? 'Submitting...' : 'Confirm Order'}
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={loading || uploading}
+          className="w-full bg-gradient-blue-pulse text-white font-bold py-4 rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4"
+        >
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Processing Order...</span>
+            </div>
+          ) : (
+            <>
+              <i className="fas fa-check-circle"></i>
+              <span>Confirm & Place Order</span>
+            </>
+          )}
+        </button>
       </form>
     </div>
   );

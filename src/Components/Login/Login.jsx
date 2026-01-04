@@ -37,6 +37,8 @@ const Login = ({ toggleSignupForm, onClose }) => {
     const data = await response.json();
     if (data.userId) {
       localStorage.setItem('userId', data.userId);
+      localStorage.setItem('userName', data.username);
+      localStorage.setItem('userEmail', data.useremail);
       alert(data.message);
       window.location.reload();
     }

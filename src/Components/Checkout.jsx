@@ -59,75 +59,83 @@ const Checkout = () => {
   }
 
   return (
-    <div className="bg-lightgray w-full mb-10">
-      <div className="flex flex-col gap-6 px-3 justify-center sm:flex-col sm:px-3 md:flex-col md:px-6 lg:flex-row lg:px-12 mt-24">
-        <div className="w-full" data-aos="fade-up">
-          <div className="overflow-y-auto bg-white scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-100" style={{ maxHeight: '70vh' }}>
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="text-[#282828]">
-                  <th className="p-2">#</th>
-                  <th className="p-2">Products</th>
-                  <th className="p-2">Quantity</th>
-                  <th className="p-2">Total Price</th>
-                </tr>
-              </thead>
-              <tbody className="px-2">
-                {cartItems.map((item, index) => (
-                  <tr key={item.cart_id} className="border-t border-b">
-                    <td className="p-4 text-[#282828] text-center">{index + 1}</td>
-                    <td className="text-[#282828]">
-                      <div className="flex flex-col gap-4 items-center sm:flex-col md:flex-row lg:flex-row">
-                        <div>
-                          <img src={item.image_url} alt={item.name} className="w-12 h-auto" />
-                        </div>
-                        <div className="text-left">
-                          <h2 className="text-sm font-bold">{item.name}</h2>
-                          <p className="text-sm">Price: {item.price} Rupees</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">{item.quantity}</td>
-                    <td className="p-4 text-[#282828] text-sm">{item.price * item.quantity}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    <div className="bg-background min-h-screen py-10 px-4 sm:px-6 lg:px-12 mt-20">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+        {/* Order Summary Section */}
+        <div className="flex-1 space-y-8" data-aos="fade-right">
+          <div className="flex items-center justify-between border-b border-border pb-6">
+            <h1 className="text-3xl font-extrabold text-text tracking-tight">Order Summary</h1>
+            <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-bold border border-primary/20">
+              {cartItems.length} Items
+            </span>
           </div>
-          <div className="mt-4 flex px-4 justify-between">
-            <h2 className="text-lg font-bold text-[#282828]">Sub-total Amount: </h2>
-            <h2 className="font-semibold">{totalAmount} Rupees</h2>
+
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
+            {cartItems.map((item) => (
+              <div key={item.cart_id} className="group bg-white p-5 rounded-2xl border border-border flex gap-6 items-center hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 transform hover:-translate-y-1">
+                <div className="w-20 h-20 bg-background rounded-xl p-2 flex items-center justify-center border border-border/50">
+                  <img src={item.image_url} alt={item.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <div className="flex-1 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div>
+                    <h2 className="text-lg font-bold text-text group-hover:text-primary transition-colors">{item.name}</h2>
+                    <p className="text-mutedText text-sm font-medium">Quantity: {item.quantity}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-black text-primary">{item.price * item.quantity} PKR</p>
+                    <p className="text-xs text-mutedText font-bold uppercase tracking-wider">{item.price} PKR / unit</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="mt-2 flex px-4 justify-between">
-            <h2 className="text-lg font-bold text-[#282828]">Shipping Charges: </h2>
-            <h2 className="font-semibold">{shippingCost > 0 ? `${shippingCost} Rupees` : 'Free'}</h2>
+
+          {/* Pricing Breakdown Card */}
+          <div className="bg-white p-8 rounded-3xl border border-border shadow-2xl space-y-4 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+
+            <div className="flex justify-between items-center text-mutedText">
+              <span className="font-medium text-lg">Sub-total</span>
+              <span className="font-bold">{totalAmount} PKR</span>
+            </div>
+            <div className="flex justify-between items-center text-mutedText">
+              <span className="font-medium text-lg">Shipping Charges</span>
+              <span className={`font-bold ${shippingCost === 0 ? 'text-success' : ''}`}>
+                {shippingCost > 0 ? `${shippingCost} PKR` : 'Free'}
+              </span>
+            </div>
+            <div className="pt-4 border-t border-border flex justify-between items-center">
+              <span className="text-xl font-bold text-text">Total Payable</span>
+              <div className="text-right">
+                <p className="text-3xl font-black text-primary">{finalTotal} PKR</p>
+                <p className="text-xs text-mutedText/60 font-medium">Include all taxes and shipping</p>
+              </div>
+            </div>
           </div>
-          <div className="mt-2 flex px-4 justify-between">
-            <h2 className="text-lg font-bold text-[#282828]">Total Amount: </h2>
-            <h2 className="font-semibold">{finalTotal} Rupees</h2>
-          </div>
-          {/* <div className="text-right mr-5 mt-8 mb-1">
-            <button
-              onClick={handleOrderSubmit}
-              className="bg-[#282828] text-white font-bold rounded-full px-12 border-2 border-black hover:bg-white hover:text-[#282828] hover:border-[#282828] transition duration-500"
-            >
-              Confirm Order
-            </button>
-          </div> */}
         </div>
-        <div className="w-full" data-aos="fade-up">
-          <p className='text-left text-semibold my-1'>Fill this form, if you want delivery.</p>
-          <CheckoutForm
-            cartItems={cartItems}
-            totalAmount={totalAmount}
-            shippingCost={shippingCost}
-            finalTotal={finalTotal}
-            userId={loggedInUserId}
-            userName={userName}
-          />
+
+        {/* Delivery Form Section */}
+        <div className="lg:w-[450px]" data-aos="fade-left">
+          <div className="sticky top-32">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-text mb-2">Delivery Details</h2>
+              <p className="text-mutedText font-medium">Please provide accurate information for timely delivery.</p>
+            </div>
+            <div className="bg-white rounded-3xl border border-border p-2 shadow-xl hover:shadow-2xl transition-all duration-500">
+              <CheckoutForm
+                cartItems={cartItems}
+                totalAmount={totalAmount}
+                shippingCost={shippingCost}
+                finalTotal={finalTotal}
+                userId={loggedInUserId}
+                userName={userName}
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <div>
+
+      <div className="mt-20 pt-10 border-t border-border">
         <Payment_methods />
       </div>
     </div>

@@ -109,7 +109,7 @@ export default function Home({ loggedInUserId }) {
       <div className="py-10">
         <OnSaleProducts loggedInUserId={loggedInUserId} />
       </div> */}
-
+      <TopProducts productsData={homedata.TopProducts} loggedInUserId={loggedInUserId} />
       <div className='my-24 py-20 bg-gradient-blue-pulse relative overflow-hidden'>
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
           <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -132,7 +132,7 @@ export default function Home({ loggedInUserId }) {
           ))}
         </div>
       </div>
-      <TopProducts productsData={homedata.TopProducts} />
+
 
       <div>
         <Customer_Support customerSupportdata={homedata.customersupportData} />

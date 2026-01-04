@@ -9,6 +9,13 @@ const ProductModal = ({ product, onClose, onAddToCart, userid }) => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const handleAddToCart = async () => {
+    if (!userid) {
+      // Trigger login form opening in Navbar via custom event
+      window.dispatchEvent(new CustomEvent('open-login-form'));
+      onClose(); // Close the product modal
+      return;
+    }
+
     setIsLoading(true);
     const productWithOptions = {
       ...product,
