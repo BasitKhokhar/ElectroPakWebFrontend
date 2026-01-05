@@ -112,7 +112,7 @@ export default function TopProducts({ productsData, loggedInUserId }) {
                             </p>
 
                             <div className="mt-auto flex items-center justify-between">
-                                <span className="text-2xl font-black text-primary">${product.price}</span>
+                                <span className="text-2xl font-black text-primary">{product.price}</span>
                                 <span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-tighter ${product.stock > 0 ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}`}>
                                     {product.stock > 0 ? 'In Stock' : 'Sold Out'}
                                 </span>

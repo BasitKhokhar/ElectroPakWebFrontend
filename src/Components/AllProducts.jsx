@@ -144,7 +144,7 @@ export default function AllProducts({ loggedInUserId }) {
             <div className="p-6 flex flex-col flex-1">
               <h3 className="text-lg font-bold text-text mb-1 line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
               <div className="flex items-center justify-between mt-auto pt-4">
-                <span className="text-xl font-extrabold text-primary">${product.price}</span>
+                <span className="text-xl font-extrabold text-primary">{product.price}</span>
                 <span className={`text-xs px-2 py-1 rounded-full font-bold ${product.stock > 0 ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}`}>
                   {product.stock > 0 ? `In Stock (${product.stock})` : 'Out of Stock'}
                 </span>
