@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Loader from './Loader';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import aboutimage from '../assets/electropakwebaboutimage.jpg'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function About() {
@@ -77,7 +78,7 @@ export default function About() {
                 <div className="absolute -inset-4 bg-primary/10 rounded-[3rem] blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
                 <div className="relative h-[400px] lg:h-[600px] rounded-[2.5rem] overflow-hidden border border-border shadow-2xl">
                   <img
-                    src={"src/assets/electropakwebaboutimage.jpg"}
+                    src={aboutimage}
                     alt="About ElectroPak"
                     className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
                   />
