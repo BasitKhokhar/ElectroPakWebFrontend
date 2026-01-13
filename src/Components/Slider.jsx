@@ -8,12 +8,12 @@ import TypingComponent from './TypingComponent';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 const ImageSlider = ({ sliderData }) => {
-   
-    useEffect(() => {
-      AOS.init({
-        duration: 1200,
-      });
-    }, []);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1200,
+    });
+  }, []);
 
 
   const settings = {
@@ -29,7 +29,7 @@ const ImageSlider = ({ sliderData }) => {
       <Slider {...settings}>
         {sliderData.map((image) => (
           <div key={image.id} className="h-3/4 w-full m-0 p-0" data-aos="zoom-in">
-            <img src={image.sliderimage_url	} alt={`Slide ${image.id}`} className="h-[90vh] w-full object-cover" />
+            <img src={image.sliderimage_url} alt={`Slide ${image.id}`} className="h-[90vh] w-full object-cover" />
           </div>
         ))}
       </Slider>
