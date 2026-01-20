@@ -52,7 +52,7 @@ export default function TopProducts({ productsData, loggedInUserId }) {
     if (loading) return <div className="py-20 flex justify-center"><Loader /></div>;
 
     return (
-        <div className="mx-4 sm:mx-6 lg:mx-20 my-24">
+        <div className="container mx-auto px-6 sm:px-6 lg:px-8 my-24">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div data-aos="fade-right">
                     <span className="text-primary font-bold tracking-widest text-sm uppercase mb-2 block">Featured Collection</span>

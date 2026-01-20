@@ -79,7 +79,7 @@ export default function Home({ loggedInUserId }) {
     <div>
       {/* <div><Navbar userId={userId}/></div> */}
       <ImageSlider sliderData={homedata.sliderData} />
-      <div className='mx-4 sm:mx-4 md:mx-6 lg:mx-20 my-24 space-y-24'>
+      <div className='container mx-auto px-6 sm:px-6 lg:px-8 my-24 space-y-24'>
         {
           homedata.homeParaData && homedata.homeParaData.map((items, index) => {
             return (
@@ -124,7 +124,7 @@ export default function Home({ loggedInUserId }) {
           <p className="text-white/80 text-lg max-w-2xl mx-auto px-4 font-medium">Watch our latest products in action and see how we redefine technology.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mx-4 sm:mx-4 md:mx-6 lg:mx-20">
+        <div className="container mx-auto px-6 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {homedata.videosData && homedata.videosData.map((video) => (
             <div key={video.id} className="group relative" data-aos="flip-up">
               <div className="absolute -inset-2 bg-white/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-duration-500"></div>

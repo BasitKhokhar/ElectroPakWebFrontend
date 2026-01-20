@@ -169,7 +169,7 @@ const Navbar = ({ userId }) => {
   }, [isOpen, isProfileOpen]);
   return (
     <nav className="bg-gradient-blue-sky fixed w-full z-50 top-0 shadow-lg border-b border-white/10 transition-all duration-300">
-      <div className="container mx-auto flex items-center justify-between p-4 ">
+      <div className="container mx-auto flex items-center justify-between px-6 sm:px-10 lg:px-8 py-4">
         {/* Left side: Logo */}
         <div className="text-text font-bold text-xl">
           <Link to="/">

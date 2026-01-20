@@ -33,8 +33,10 @@ const ImageSlider = ({ sliderData }) => {
           </div>
         ))}
       </Slider>
-      <div className=' absolute top-[40%] left-[5%] z-[1]'>
-        <TypingComponent />
+      <div className='absolute inset-0 z-[1] flex items-center'>
+        <div className='container mx-auto px-6 sm:px-6 lg:px-8'>
+          <TypingComponent />
+        </div>
       </div>
       <div className=' bg-black max-h-[90vh] h-[90vh] w-full opacity-40 absolute top-0 left-0'></div>
     </div>

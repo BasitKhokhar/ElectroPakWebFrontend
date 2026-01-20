@@ -9,8 +9,8 @@ export default function Customer_Support({ customerSupportdata }) {
     });
   }, []);
   return (
-    <div className='bg-background text-text px-4 sm:px-4 md:px-6 lg:px-10 py-12 my-8'>
-      <div className='container mx-auto grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
+    <div className='bg-background text-text py-12 my-8'>
+      <div className='container mx-auto px-6 sm:px-6 lg:px-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
         {
           customerSupportdata && customerSupportdata.map((items) => {
             return (
